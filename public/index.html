@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintForge — Automated POD Design Factory</title>
+    <meta name="description" content="Generate print-on-demand designs automatically. Upload to Redbubble, TeePublic, Society6 and earn passive income.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header glass">
+        <div class="container header-inner">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <defs><linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="brand-name">Print<span class="accent">Forge</span></span>
+                    <span class="brand-tag">POD Design Factory</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-pill glass-subtle">
+                    <span class="stat-dot pulse-green"></span>
+                    <span id="stat-status">System Online</span>
+                </div>
+                <div class="stat-pill glass-subtle">
+                    <span class="stat-icon">🎨</span>
+                    <span><b id="stat-generated">0</b> Designs</span>
+                </div>
+                <div class="stat-pill glass-subtle">
+                    <span class="stat-icon">💾</span>
+                    <span><b id="stat-saved">0</b> Saved</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">
+                Generate. Upload. <span class="gradient-text">Get Paid.</span>
+            </h1>
+            <p class="hero-subtitle">
+                AI-powered design factory for print-on-demand marketplaces. 
+                Generate professional designs in seconds, upload to platforms with <b>30M+ monthly shoppers</b>, 
+                and earn passive income while you sleep. Zero marketing required.
+            </p>
+            <div class="hero-steps">
+                <div class="step-card glass-subtle">
+                    <div class="step-num">1</div>
+                    <div class="step-icon">🎯</div>
+                    <h3>Pick a Niche</h3>
+                    <p>Choose from proven, high-demand niches</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card glass-subtle">
+                    <div class="step-num">2</div>
+                    <div class="step-icon">⚡</div>
+                    <h3>Generate Designs</h3>
+                    <p>AI creates print-ready designs + metadata</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card glass-subtle">
+                    <div class="step-num">3</div>
+                    <div class="step-icon">💰</div>
+                    <h3>Upload & Earn</h3>
+                    <p>Drag to Redbubble/TeePublic — they handle the rest</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Niche Explorer -->
+    <section class="section" id="section-niches">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Niche Explorer</h2>
+                <p class="section-subtitle">Click a niche to start generating designs. Each niche has pre-built prompts optimized for POD sales.</p>
+            </div>
+            <div class="niche-grid" id="niche-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Studio -->
+    <section class="section" id="section-studio" style="display:none;">
+        <div class="container">
+            <div class="section-header">
+                <button class="btn-back" id="btn-back" onclick="app.backToNiches()">← Back to Niches</button>
+                <h2 class="section-title" id="studio-title">Design Studio</h2>
+                <p class="section-subtitle" id="studio-subtitle">Generating designs...</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="studio-controls glass">
+                <div class="control-group">
+                    <label>Design Style</label>
+                    <select id="select-style" onchange="app.changeStyle()">
+                        <option value="bold_typography">Bold Typography</option>
+                        <option value="illustration" selected>Vector Illustration</option>
+                        <option value="vintage">Vintage / Retro</option>
+                        <option value="minimalist">Minimalist Line Art</option>
+                        <option value="cute">Cute / Kawaii</option>
+                        <option value="dark_aesthetic">Dark Aesthetic</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Batch Size</label>
+                    <select id="select-batch">
+                        <option value="4">4 Designs</option>
+                        <option value="6" selected>6 Designs</option>
+                        <option value="9">9 Designs</option>
+                        <option value="12">12 Designs</option>
+                    </select>
+                </div>
+                <button class="btn-generate" id="btn-generate" onclick="app.generateBatch()">
+                    <span class="btn-icon">⚡</span> Generate Designs
+                </button>
+                <button class="btn-save-all" id="btn-save-all" onclick="app.saveAllDesigns()" disabled>
+                    <span class="btn-icon">💾</span> Download All (ZIP)
+                </button>
+            </div>
+
+            <!-- Design Grid -->
+            <div class="design-grid" id="design-grid">
+                <!-- Dynamically generated design cards appear here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Metadata Panel (slides in when a design is selected) -->
+    <div class="meta-panel glass" id="meta-panel">
+        <div class="meta-panel-header">
+            <h3>Marketplace Metadata</h3>
+            <button class="meta-close" onclick="app.closeMetaPanel()">✕</button>
+        </div>
+        <div class="meta-panel-body" id="meta-panel-body">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Platform Guide -->
+    <section class="section" id="section-guide">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Platform Setup Guide</h2>
+                <p class="section-subtitle">Free accounts. Built-in traffic. They print, ship, and handle customers. You just upload designs.</p>
+            </div>
+            <div class="guide-grid">
+                <!-- Redbubble -->
+                <div class="guide-card glass">
+                    <div class="guide-card-header">
+                        <div class="platform-logo" style="background: linear-gradient(135deg, #e8433e, #d42f2f);">RB</div>
+                        <div>
+                            <h3>Redbubble</h3>
+                            <span class="guide-tag">~15M monthly visitors</span>
+                        </div>
+                    </div>
+                    <div class="guide-stats">
+                        <div class="guide-stat">
+                            <span class="label">Royalty</span>
+                            <span class="value">20% default</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Startup Cost</span>
+                            <span class="value accent">FREE</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Payout</span>
+                            <span class="value">15th monthly</span>
+                        </div>
+                    </div>
+                    <div class="guide-steps">
+                        <div class="guide-step"><span>1</span> Go to <b>redbubble.com</b> → Sign Up (free)</div>
+                        <div class="guide-step"><span>2</span> Click <b>"Sell your art"</b> → Upload design PNG</div>
+                        <div class="guide-step"><span>3</span> Paste the <b>title, tags, description</b> from PrintForge metadata</div>
+                        <div class="guide-step"><span>4</span> Enable all product types → <b>Publish</b></div>
+                        <div class="guide-step"><span>5</span> Repeat. More designs = more passive income 💰</div>
+                    </div>
+                    <a href="https://www.redbubble.com/signup" target="_blank" class="btn-platform">Create Free Account →</a>
+                </div>
+
+                <!-- TeePublic -->
+                <div class="guide-card glass">
+                    <div class="guide-card-header">
+                        <div class="platform-logo" style="background: linear-gradient(135deg, #27ae60, #219a52);">TP</div>
+                        <div>
+                            <h3>TeePublic</h3>
+                            <span class="guide-tag">~10M monthly visitors</span>
+                        </div>
+                    </div>
+                    <div class="guide-stats">
+                        <div class="guide-stat">
+                            <span class="label">Per Sale</span>
+                            <span class="value">$4–$6 flat</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Startup Cost</span>
+                            <span class="value accent">FREE</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Payout</span>
+                            <span class="value">15th monthly</span>
+                        </div>
+                    </div>
+                    <div class="guide-steps">
+                        <div class="guide-step"><span>1</span> Go to <b>teepublic.com</b> → Create Account (free)</div>
+                        <div class="guide-step"><span>2</span> Click <b>"Upload A Design"</b> → Drop your PNG</div>
+                        <div class="guide-step"><span>3</span> Paste <b>title + tags</b> from PrintForge</div>
+                        <div class="guide-step"><span>4</span> Select product types → <b>Submit</b></div>
+                        <div class="guide-step"><span>5</span> Each design sells on 60+ product types automatically</div>
+                    </div>
+                    <a href="https://www.teepublic.com/signup" target="_blank" class="btn-platform">Create Free Account →</a>
+                </div>
+
+                <!-- Society6 -->
+                <div class="guide-card glass">
+                    <div class="guide-card-header">
+                        <div class="platform-logo" style="background: linear-gradient(135deg, #3498db, #2980b9);">S6</div>
+                        <div>
+                            <h3>Society6</h3>
+                            <span class="guide-tag">~8M monthly visitors</span>
+                        </div>
+                    </div>
+                    <div class="guide-stats">
+                        <div class="guide-stat">
+                            <span class="label">Margin</span>
+                            <span class="value">10–30% set by you</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Startup Cost</span>
+                            <span class="value accent">FREE</span>
+                        </div>
+                        <div class="guide-stat">
+                            <span class="label">Payout</span>
+                            <span class="value">1st monthly</span>
+                        </div>
+                    </div>
+                    <div class="guide-steps">
+                        <div class="guide-step"><span>1</span> Go to <b>society6.com</b> → Sign Up as Artist (free)</div>
+                        <div class="guide-step"><span>2</span> Click <b>"Sell"</b> → Upload design</div>
+                        <div class="guide-step"><span>3</span> Add <b>title, tags, description</b></div>
+                        <div class="guide-step"><span>4</span> Set markup percentage → <b>Publish</b></div>
+                        <div class="guide-step"><span>5</span> Designs appear on wall art, home decor, apparel & more</div>
+                    </div>
+                    <a href="https://society6.com/signup" target="_blank" class="btn-platform">Create Free Account →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revenue Estimator -->
+    <section class="section" id="section-estimator">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Revenue Estimator</h2>
+                <p class="section-subtitle">Based on marketplace averages. More designs = more daily discovery by shoppers.</p>
+            </div>
+            <div class="estimator glass">
+                <div class="estimator-input">
+                    <label>Total Designs Uploaded</label>
+                    <input type="range" id="range-designs" min="10" max="1000" value="100" step="10" oninput="app.updateEstimate()">
+                    <div class="range-labels">
+                        <span>10</span>
+                        <span class="range-value" id="range-value">100</span>
+                        <span>1000</span>
+                    </div>
+                </div>
+                <div class="estimator-results">
+                    <div class="est-card">
+                        <span class="est-label">Conservative (1%)</span>
+                        <span class="est-value" id="est-low">$0</span>
+                        <span class="est-sub">per day</span>
+                    </div>
+                    <div class="est-card featured">
+                        <span class="est-label">Average (3%)</span>
+                        <span class="est-value" id="est-mid">$0</span>
+                        <span class="est-sub">per day</span>
+                    </div>
+                    <div class="est-card">
+                        <span class="est-label">Strong (5%)</span>
+                        <span class="est-value" id="est-high">$0</span>
+                        <span class="est-sub">per day</span>
+                    </div>
+                </div>
+                <p class="est-note">Based on avg $5 profit/sale across Redbubble + TeePublic. "%" = daily sell-through rate of your catalog.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p>PrintForge — POD Design Factory · Zero marketing. Zero fulfillment. Pure passive income.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="js/niches.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
