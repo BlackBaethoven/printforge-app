@@ -479,7 +479,7 @@ const app = {
         const designs = parseInt(document.getElementById('range-designs').value);
         document.getElementById('range-value').textContent = designs;
 
-        const avgProfit = 5; // $5 average profit per sale
+        const avgProfit = 4; // $4 average profit per sale (Zazzle, KDP, TP)
 
         // Conservative: 1% of catalog sells daily
         const low = Math.round(designs * 0.01 * avgProfit);
