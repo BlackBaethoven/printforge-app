@@ -100,7 +100,19 @@ const app = {
     buildPrompt(basePrompt) {
         const style = document.getElementById('select-style').value;
         const modifier = this.styleModifiers[style] || this.styleModifiers.illustration;
-        return `${modifier}, ${basePrompt}, centered composition, isolated on solid black background, high resolution, print-ready t-shirt design, professional quality, no watermarks, no text artifacts`;
+        
+        let prompt = `${modifier}, ${basePrompt}, perfectly centered composition, isolated on clean solid black background, highly detailed, masterpiece, professional graphic design, crisp edges, print-ready t-shirt design`;
+        
+        // Prevent AI from attempting to draw gibberish words if the prompt isn't meant to be typography
+        const wantsText = basePrompt.toLowerCase().includes('typography') || basePrompt.toLowerCase().includes('text') || basePrompt.toLowerCase().includes('saying');
+        if (!wantsText) {
+            prompt += `, NO text, typography-free, no letters, no words, no watermarks, no signatures`;
+        } else {
+            // For typography, emphasize correct spelling
+            prompt += `, perfectly spelled text, legible typography, precise lettering`;
+        }
+        
+        return prompt;
     },
 
     // ─── Generate Batch of Designs ───────────────────────────
